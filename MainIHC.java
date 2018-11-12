@@ -1,0 +1,48 @@
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.border.*;
+
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+public class MainIHC extends JPanel implements ActionListener {
+	protected JTabbedPane pisos;
+	protected JPanel big, controle;
+	
+	protected JButton entradaB, saidaB;
+	
+	public MainIHC() {
+		pisos = new JTabbedPane();
+		Piso pt = PisoT.getInstance();
+		pisos.addTab("Terreo", pt.assembleVagas());
+		Piso p1 = PisoT.getInstance();
+		pisos.addTab("Piso 1", p1.assembleVagas());
+		
+		controle = new JPanel();
+		controle.setLayout(new GridLayout(0, 1, 0, 5));
+		
+		entradaB = new JButton("Entrar novo carro");
+		entradaB.addActionListener(this);
+		entradaB.setMnemonic(KeyEvent.VK_E);
+		entradaB.setActionCommand("entrar");
+		entradaB.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+
+		saidaB = new JButton("Sair carro");
+		saidaB.addActionListener(this);
+		saidaB.setMnemonic(KeyEvent.VK_S);
+		saidaB.setActionCommand("sair");
+		saidaB.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		
+		controle.add(entradaB);
+		controle.add(saidaB);
+		
+		big = new JPanel();
+		big.add(pisos);
+		big.add(controle);
+		
+		add(big);
+	}
+	
+	public void actionPerformed(ActionEvent e) { }
+}
