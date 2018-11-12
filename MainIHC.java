@@ -11,12 +11,13 @@ public class MainIHC extends JPanel implements ActionListener {
 	protected JPanel big, controle;
 	
 	protected JButton entradaB, saidaB;
+	private JFrame master, popup;
 	
 	public MainIHC() {
 		pisos = new JTabbedPane();
 		Piso pt = PisoT.getInstance();
 		pisos.addTab("Terreo", pt.assembleVagas());
-		Piso p1 = PisoT.getInstance();
+		Piso p1 = Piso1.getInstance();
 		pisos.addTab("Piso 1", p1.assembleVagas());
 		
 		controle = new JPanel();
@@ -44,5 +45,13 @@ public class MainIHC extends JPanel implements ActionListener {
 		add(big);
 	}
 	
-	public void actionPerformed(ActionEvent e) { }
+	public void actionPerformed(ActionEvent e) {
+		String cmd = e.getActionCommand();
+		if (cmd.equals("entrar")) {
+			popup = new JFrame("Entrar novo carro");
+			popup.setContentPane( new EntradaIHC(popup) );
+	        popup.pack();
+	        popup.setVisible(true);
+		}
+	}
 }

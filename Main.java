@@ -3,7 +3,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		PisoT t = PisoT.getInstance();
+		//PisoT t = PisoT.getInstance();
+		Sistema.getInstance();
 	}
 
 }

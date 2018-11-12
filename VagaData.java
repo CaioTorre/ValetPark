@@ -1,6 +1,9 @@
 import java.awt.Color;
+import java.awt.Dimension;
 
+import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 public class VagaData {
 	private boolean ocupado;
@@ -54,10 +57,12 @@ public class VagaData {
 			content = "<html><div style='text-align: center;'>" + tipo_vaga + "<br>Vaga livre</div></html>";
 		}
 		
-		JLabel out = new JLabel(content);
+		JLabel out = new JLabel(content, SwingConstants.CENTER);
 		
 		if (this.ocupado) { out.setBackground(Color.RED); } else { out.setBackground(Color.GREEN); }
-		out.setOpaque(false);
+		out.setOpaque(true);
+		out.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		out.setPreferredSize(new Dimension(100, 50));
 		return out;
 	}
 }
