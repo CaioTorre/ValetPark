@@ -14,6 +14,12 @@ public class MainIHC extends JPanel implements ActionListener {
 	private JFrame master, popup;
 	
 	public MainIHC() {
+		rebuildView();
+	}
+	
+	private void rebuildView() {
+		this.removeAll();
+		
 		pisos = new JTabbedPane();
 		Piso pt = PisoT.getInstance();
 		pisos.addTab("Terreo", pt.assembleVagas());
@@ -53,5 +59,21 @@ public class MainIHC extends JPanel implements ActionListener {
 	        popup.pack();
 	        popup.setVisible(true);
 		}
+	}
+	
+	public void refreshView() {
+		//Piso pt = PisoT.getInstance();
+		//Piso p1 = Piso1.getInstance();
+		//JPanel p = (JPanel)this.getComponent(0);
+		//JTabbedPane nova = new JTabbedPane();
+		//nova.addTab("Terreo", pt.assembleVagas());
+		//nova.addTab("Piso 1", p1.assembleVagas());
+	
+		//JTabbedPane t = (JTabbedPane)p.getComponent(0);
+		//t.setTabComponentAt(0, pt.assembleVagas());
+		//t.setTabComponentAt(1, p1.assembleVagas());
+		rebuildView();
+		revalidate();
+		repaint();
 	}
 }

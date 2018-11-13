@@ -14,6 +14,7 @@ public class VagaData {
 	private int tipo;
 	
 	public VagaData(int id, int tipo) {
+		System.out.printf("Creating %d as %d\n", id, tipo);
 		this.ocupado = false;
 		//this.placa = "";
 		//this.hh = -1;

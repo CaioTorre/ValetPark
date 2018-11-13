@@ -3,8 +3,8 @@ import java.util.ArrayList;
 
 import javax.swing.*;
 
-public class Piso {
-	protected static ArrayList<VagaData> vagas = new ArrayList(); // 100
+public abstract class Piso {
+	protected ArrayList<VagaData> vagas = new ArrayList(); // 100
 	
 	public JComponent assembleVagas() {
 		JPanel out = new JPanel();

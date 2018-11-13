@@ -18,7 +18,7 @@ public class PisoT extends Piso {
 		vagas.clear();
 		for (i = 0; i < 100; i++) { 
 			temp = Math.max(Math.ceil((i+1.0)/20.0 - 3.0), 0.0);
-			//System.out.printf("%d - %f (%d)\n", i, temp, (int)temp);
+			System.out.printf("%d - %f (%d)\n", i, temp, (int)temp);
 			vagas.add( new VagaData(i, (int)temp) );
 		}
 	}

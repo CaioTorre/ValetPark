@@ -40,4 +40,9 @@ public class Sistema {
 		if (res > -1) return res;
 		return p1.tentaInserir(new VeiculoData(placa, hh, mm, ss, tipo));
 	}
+	
+	public void refreshMain() {
+		MainIHC m = (MainIHC) screen;
+		m.refreshView();
+	}
 }
