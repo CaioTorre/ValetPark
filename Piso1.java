@@ -18,6 +18,6 @@ public class Piso1 extends Piso  {
 	private Piso1() {
 		int i;
 		vagas.clear();
-		for (i = 0; i < 100; i++) { vagas.add(new VagaData(i, 0)); }
+		for (i = 0; i < 100; i++) { vagas.add(new VagaData(i, 0, 1)); }
 	}
 }

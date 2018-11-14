@@ -1,19 +1,24 @@
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class MainIHC extends JPanel implements ActionListener {
+public class MainIHC extends JPanel implements ActionListener, ChangeListener {
 	protected JTabbedPane pisos;
 	protected JPanel big, controle;
 	
 	protected JButton entradaB, saidaB;
 	private JFrame master, popup;
 	
+	private int selectedTab;
+	
 	public MainIHC() {
+		selectedTab = 0;
 		rebuildView();
 	}
 	
@@ -25,6 +30,10 @@ public class MainIHC extends JPanel implements ActionListener {
 		pisos.addTab("Terreo", pt.assembleVagas());
 		Piso p1 = Piso1.getInstance();
 		pisos.addTab("Piso 1", p1.assembleVagas());
+		
+		pisos.setSelectedIndex(selectedTab);
+		
+		pisos.addChangeListener(this);
 		
 		controle = new JPanel();
 		controle.setLayout(new GridLayout(0, 1, 0, 5));
@@ -54,10 +63,15 @@ public class MainIHC extends JPanel implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String cmd = e.getActionCommand();
 		if (cmd.equals("entrar")) {
-			popup = new JFrame("Entrar novo carro");
+			popup = new JFrame("Entrar novo veiculo");
 			popup.setContentPane( new EntradaIHC(popup) );
 	        popup.pack();
 	        popup.setVisible(true);
+		} else if (cmd.equals("sair")) {
+			popup = new JFrame("Sair veiculo");
+			popup.setContentPane( new SaidaIHC(popup));
+			popup.pack();
+			popup.setVisible(true);
 		}
 	}
 	
@@ -76,4 +90,11 @@ public class MainIHC extends JPanel implements ActionListener {
 		revalidate();
 		repaint();
 	}
+	
+	public void stateChanged(ChangeEvent e) {
+		JTabbedPane pane = (JTabbedPane) e.getSource();
+        System.out.println("Selected Tab: " + pane.getSelectedIndex());
+        this.selectedTab = pane.getSelectedIndex();
+        // Prints the string 3 times if there are 3 tabs etc
+    }
 }
