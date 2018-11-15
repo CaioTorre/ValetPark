@@ -26,18 +26,18 @@ public class EntradaIHC extends JPanel implements ActionListener {
 	private JRadioButton rbCarro, rbCaminhonete, rbMoto;
 	private JFormattedTextField fieldVaga;
 	
-	private JFrame current;
+	//private JFrame current;
 	private VagaInfoIHC tipo_pai;
 	
 	private int tipo_veiculo = 0;
 	
 	private int andar;
 	
-	public EntradaIHC(JFrame f) {
+	public EntradaIHC() { //JFrame f
 		Font font = new Font("FE-Schrift", Font.PLAIN, 42);
 		
-		f.setPreferredSize(new Dimension(500, 500));
-		current = f;
+		//f.setPreferredSize(new Dimension(500, 500));
+		//current = f;
 		JPanel big = new JPanel();
 		big.setLayout(new BoxLayout(big, BoxLayout.Y_AXIS));
 		big.setAlignmentX(CENTER_ALIGNMENT);
@@ -48,7 +48,7 @@ public class EntradaIHC extends JPanel implements ActionListener {
 		MaskFormatter tempFormatter = makeFormatter("UUU-####");
 		tempFormatter.setPlaceholderCharacter('_');
 		fieldPlaca = new JFormattedTextField( tempFormatter );
-		fieldPlaca.addActionListener(this);
+		//fieldPlaca.addActionListener(this);
 		fieldPlaca.setHorizontalAlignment(JTextField.CENTER);
 		fieldPlaca.setFont(font);
 
@@ -57,7 +57,7 @@ public class EntradaIHC extends JPanel implements ActionListener {
 		tempFormatter = makeFormatter("##:##:##");
 		tempFormatter.setPlaceholderCharacter('0');
 		fieldHorario = new JFormattedTextField( tempFormatter );
-		fieldHorario.addActionListener(this);
+		//fieldHorario.addActionListener(this);
 		fieldHorario.setHorizontalAlignment(JTextField.CENTER);
 		fieldHorario.setFont(font);
 		
@@ -117,20 +117,20 @@ public class EntradaIHC extends JPanel implements ActionListener {
 		tempFormatter = makeFormatter("###");
 		tempFormatter.setPlaceholderCharacter('0');
 		fieldVaga = new JFormattedTextField( tempFormatter );
-		fieldVaga.addActionListener(this);
+		//fieldVaga.addActionListener(Sistema.getInstance());
 		fieldVaga.setHorizontalAlignment(JTextField.CENTER);
 		fieldVaga.setEnabled(false);
 		selectVaga.add(fieldVaga);
 		
 		bConfirma = new JButton("Confirma");
-		bConfirma.setActionCommand("confirma");
+		bConfirma.setActionCommand("confirmaInsercao");
 		bConfirma.setMnemonic(KeyEvent.VK_ACCEPT);
-		bConfirma.addActionListener(this);
+		bConfirma.addActionListener(Sistema.getInstance());
 
 		bCancela = new JButton("Cancela");
-		bCancela.setActionCommand("cancela");
+		bCancela.setActionCommand("cancelaInsercao");
 		bCancela.setMnemonic(KeyEvent.VK_ESCAPE);
-		bCancela.addActionListener(this);
+		bCancela.addActionListener(Sistema.getInstance());
 		
 		JPanel buttonPane = new JPanel();
 		buttonPane.setLayout(new BoxLayout(buttonPane, BoxLayout.LINE_AXIS));
@@ -180,8 +180,8 @@ public class EntradaIHC extends JPanel implements ActionListener {
 		repaint();
 	}*/
 	
-	public EntradaIHC(JFrame f, int vaga, int andar, int tipo, VagaInfoIHC info) {
-		this(f);
+	public EntradaIHC(int vaga, int andar, int tipo) { // JFrame f, //, VagaInfoIHC info
+		this(); //f
 		
 		//Fixando codigo da vaga
 		fieldVaga.setValue(String.format("%03d", vaga + 1));
@@ -203,7 +203,7 @@ public class EntradaIHC extends JPanel implements ActionListener {
 		rbMoto.setEnabled(false);
 		tipo_veiculo = tipo;
 		this.andar = andar;
-		tipo_pai = info;
+		//tipo_pai = info;
 		revalidate();
 		repaint();
 	}
@@ -231,23 +231,24 @@ public class EntradaIHC extends JPanel implements ActionListener {
 		fieldHorario.setEditable(false);
 	}
 	
-	private void close() {
-		current.dispatchEvent(new WindowEvent(current, WindowEvent.WINDOW_CLOSING));
-	}
+	//private void close() {
+	//	current.dispatchEvent(new WindowEvent(current, WindowEvent.WINDOW_CLOSING));
+	//}
 	
 	public void actionPerformed(ActionEvent e) {
 		Sistema s = Sistema.getInstance();
 		String cmd = e.getActionCommand();
-		if (cmd.equals("cancela")) {
+		//if (cmd.equals("cancela")) {
 			current.dispatchEvent(new WindowEvent(current, WindowEvent.WINDOW_CLOSING));
-		} else if (cmd.equals("confirma")) {
+		//} else 
+		if (cmd.equals("confirma")) {
 			disableAll();
 			String placa = fieldPlaca.getText();
-			String tempo_string = (String)fieldHorario.getText();
+			String tempo_string = fieldHorario.getText();
 			//System.out.printf("tempo = %s\n", tempo_string);
-			int hh = Integer.parseInt("" + tempo_string.charAt(0) + tempo_string.charAt(1));
+			/*int hh = Integer.parseInt("" + tempo_string.charAt(0) + tempo_string.charAt(1));
 			int mm = Integer.parseInt("" + tempo_string.charAt(3) + tempo_string.charAt(4));
-			int ss = Integer.parseInt("" + tempo_string.charAt(6) + tempo_string.charAt(7));
+			int ss = Integer.parseInt("" + tempo_string.charAt(6) + tempo_string.charAt(7));*/
 			//System.out.printf("parsed = %d:%d:%d\n", hh, mm, ss);
 			int result;
 			try {

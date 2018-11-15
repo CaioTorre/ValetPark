@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class VagaInfoIHC extends JPanel implements ActionListener{
+public class VagaInfoIHC extends JPanel{
 	private JTextField fieldPlaca, fieldHorario, fieldTipo;
 	private JButton bSair, bAction;
 	private JPanel big;
@@ -24,6 +24,8 @@ public class VagaInfoIHC extends JPanel implements ActionListener{
 	private int id;
 	private int tipo;
 	private int andar;
+	
+	private int uniqueID;
 	
 	private VagaData vaga;
 	
@@ -39,7 +41,7 @@ public class VagaInfoIHC extends JPanel implements ActionListener{
 		return x;
 	}
 	
-	@Override
+	/*@Override
 	public void actionPerformed(ActionEvent a) {
 		String cmd = a.getActionCommand();
 		if (cmd.equals("inserir")) {
@@ -52,7 +54,7 @@ public class VagaInfoIHC extends JPanel implements ActionListener{
 		} else if (cmd.equals("remover")) {
 			
 		}
-	}
+	}*/
 	
 	private void buildIHC(JFrame f, VagaData vaga) {
 		this.removeAll();
@@ -67,7 +69,7 @@ public class VagaInfoIHC extends JPanel implements ActionListener{
 		control = f;
 		
 		bSair = new JButton("Cancelar");
-		bSair.addActionListener(this);
+		bSair.addActionListener(Sistema.getInstance());
 		bSair.setActionCommand("cancelar");
 		buttons.add(bSair);
 		buttons.add(Box.createHorizontalGlue());
@@ -101,8 +103,7 @@ public class VagaInfoIHC extends JPanel implements ActionListener{
 			big.add(fieldTipo);
 
 			bAction = new JButton("Remover veiculo");
-			bAction.addActionListener(this);
-			bAction.setActionCommand("remover");
+			bAction.setActionCommand(String.format("remover\n%d", uniqueID));
 		} else {
 			big.setBackground(Color.getHSBColor((float)(140.0/360.0), (float)0.69, (float)1.0));
 			big.add(Box.createRigidArea(new Dimension(0, 200)));
@@ -110,9 +111,9 @@ public class VagaInfoIHC extends JPanel implements ActionListener{
 			temp.setFont(bigFont);
 			big.add(temp);
 			bAction = new JButton("Inserir veiculo");
-			bAction.addActionListener(this);
-			bAction.setActionCommand("inserir");
+			bAction.setActionCommand(String.format("inserir\n%d", uniqueID));
 		}
+		bAction.addActionListener(Sistema.getInstance());
 		buttons.add(bAction);
 		
 		big.add(Box.createRigidArea(new Dimension(0, 50)));
