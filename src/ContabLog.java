@@ -19,4 +19,9 @@ public class ContabLog {
 	public Epoch	getSaida()	{ return saida; }
 	public Epoch	getDelta()	{ return saida.deltaE(entrada); }
 	public float	getPreco()	{ return preco; }
+	
+	public Object[]	getRow() { 
+		Object[] list = {placa, tipo, entrada, saida, preco}; 
+		return list;
+	}
 }

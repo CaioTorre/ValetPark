@@ -15,6 +15,7 @@ public class Sistema {
 	
 	public final static String ptArq = "pisoTerreo.csv";
 	public final static String p1Arq = "piso1.csv";
+	public final static String lgArq = "contabilidade.csv";
 	
 	private Sistema() {
 		pt = PisoT.getInstance();
@@ -30,6 +31,8 @@ public class Sistema {
         control.pack();
         control.setVisible(true);
 	}
+	
+	public Contabilidade getContabilidade() { return contab; }
 	
 	public int entraCarro(String placa, int hh, int mm, int ss, int tipo, int vaga) throws VagaInvalidaEX, HoraInvalidaEX {
 		if (vaga < 1 || vaga > 200) { throw new VagaInvalidaEX(); }
@@ -83,6 +86,7 @@ public class Sistema {
 			processaSaida(pt, paraRemover, e);
 			gotIt = true;
 			pt.salvaPiso(ptArq);
+			contab.salvaLogs(lgArq);
 		} catch (PlacaNNEncontradaEX ex) { //Talvez esteja em P1
 			
 		} catch (DeltaTInvalidoEX ex) {
@@ -96,6 +100,7 @@ public class Sistema {
 		try {
 			processaSaida(p1, paraRemover, e);
 			p1.salvaPiso(p1Arq);
+			contab.salvaLogs(lgArq);
 		} catch (PlacaNNEncontradaEX ex) {
 			throw ex;
 		} catch (DeltaTInvalidoEX ex) {

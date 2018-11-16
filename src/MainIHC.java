@@ -11,7 +11,7 @@ public class MainIHC extends JPanel implements ActionListener, ChangeListener {
 	protected JTabbedPane pisos;
 	protected JPanel big, controle;
 	
-	protected JButton entradaB, saidaB;
+	protected JButton entradaB, saidaB, logB;
 	private JFrame popup;
 	
 	private int selectedTab;
@@ -50,8 +50,15 @@ public class MainIHC extends JPanel implements ActionListener, ChangeListener {
 		saidaB.setActionCommand("sair");
 		saidaB.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		
+		logB = new JButton("Visualizar logs");
+		logB.addActionListener(this);
+		logB.setMnemonic(KeyEvent.VK_S);
+		logB.setActionCommand("logs");
+		logB.setAlignmentX(JComponent.CENTER_ALIGNMENT);
+		
 		controle.add(entradaB);
 		controle.add(saidaB);
+		controle.add(logB);
 		
 		big = new JPanel();
 		big.add(pisos);
@@ -64,15 +71,28 @@ public class MainIHC extends JPanel implements ActionListener, ChangeListener {
 		String cmd = e.getActionCommand();
 		if (cmd.equals("entrar")) {
 			popup = new JFrame("Entrar novo veiculo");
-			popup.setContentPane( new EntradaIHC(popup) );
-	        popup.pack();
-	        popup.setVisible(true);
+			newPopup( new EntradaIHC(popup) );
+//			popup.setContentPane( new EntradaIHC(popup) );
+//	        popup.pack();
+//	        popup.setVisible(true);
+		} else if (cmd.equals("logs")) {
+			popup = new JFrame("Entradas/saidas de veiculos");
+			newPopup( new ContabilidadeIHC() );
+//			popup.setContentPane( new ContabilidadeIHC() );
+//			popup.pack();
+//			popup.setVisible(true);
 		} else if (cmd.equals("sair")) {
 			popup = new JFrame("Sair veiculo");
-			popup.setContentPane( new SaidaIHC(popup));
-			popup.pack();
-			popup.setVisible(true);
+			newPopup( new SaidaIHC(popup) );
+			//popup.setContentPane( new SaidaIHC(popup) );
+			//newPopup( "Sair veiculo", new SaidaIHC(popup) );
 		}
+	}
+	
+	private void newPopup(JPanel content) {
+		popup.setContentPane( content );
+		popup.pack();
+		popup.setVisible(true);
 	}
 	
 	public void refreshView() {
