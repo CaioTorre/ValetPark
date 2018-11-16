@@ -1,11 +1,4 @@
-import java.awt.event.ActionListener;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import java.io.FileNotFoundException;
 
 public class Piso1 extends Piso  {
 	private static Piso1 self;
@@ -16,8 +9,24 @@ public class Piso1 extends Piso  {
 	}
 	
 	private Piso1() {
-		int i;
+		try {
+			carregaPiso(Sistema.p1Arq);
+		} catch (FileNotFoundException ex) {
+			System.err.println("Arquivo nao foi encontrado, criando piso 1 vazio");
+			criaVazio();
+		} catch (NumberFormatException ex) {
+			System.err.println("Arquivo possui inteiros mal-formados, criando piso 1 vazio");
+			ex.printStackTrace(System.err);
+			criaVazio();
+		} catch (BadEpochStringEX ex) {
+			System.err.println("Arquivo possui epochs mal-formados, criando piso 1 vazio");
+			ex.printStackTrace(System.err);
+			criaVazio();
+		}
+	}
+	
+	private void criaVazio() {
 		vagas.clear();
-		for (i = 0; i < 100; i++) { vagas.add(new VagaData(i, 0, 1)); }
+		for (int i = 0; i < 100; i++) { vagas.add(new VagaData(i, 0, 1)); }
 	}
 }

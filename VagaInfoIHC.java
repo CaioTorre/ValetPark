@@ -13,7 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-public class VagaInfoIHC extends JPanel{
+public class VagaInfoIHC extends JPanel implements ActionListener{
 	private JTextField fieldPlaca, fieldHorario, fieldTipo;
 	private JButton bSair, bAction;
 	private JPanel big;
@@ -24,8 +24,6 @@ public class VagaInfoIHC extends JPanel{
 	private int id;
 	private int tipo;
 	private int andar;
-	
-	private int uniqueID;
 	
 	private VagaData vaga;
 	
@@ -41,7 +39,7 @@ public class VagaInfoIHC extends JPanel{
 		return x;
 	}
 	
-	/*@Override
+	@Override
 	public void actionPerformed(ActionEvent a) {
 		String cmd = a.getActionCommand();
 		if (cmd.equals("inserir")) {
@@ -54,7 +52,7 @@ public class VagaInfoIHC extends JPanel{
 		} else if (cmd.equals("remover")) {
 			
 		}
-	}*/
+	}
 	
 	private void buildIHC(JFrame f, VagaData vaga) {
 		this.removeAll();
@@ -69,7 +67,7 @@ public class VagaInfoIHC extends JPanel{
 		control = f;
 		
 		bSair = new JButton("Cancelar");
-		bSair.addActionListener(Sistema.getInstance());
+		bSair.addActionListener(this);
 		bSair.setActionCommand("cancelar");
 		buttons.add(bSair);
 		buttons.add(Box.createHorizontalGlue());
@@ -103,7 +101,8 @@ public class VagaInfoIHC extends JPanel{
 			big.add(fieldTipo);
 
 			bAction = new JButton("Remover veiculo");
-			bAction.setActionCommand(String.format("remover\n%d", uniqueID));
+			bAction.addActionListener(this);
+			bAction.setActionCommand("remover");
 		} else {
 			big.setBackground(Color.getHSBColor((float)(140.0/360.0), (float)0.69, (float)1.0));
 			big.add(Box.createRigidArea(new Dimension(0, 200)));
@@ -111,9 +110,9 @@ public class VagaInfoIHC extends JPanel{
 			temp.setFont(bigFont);
 			big.add(temp);
 			bAction = new JButton("Inserir veiculo");
-			bAction.setActionCommand(String.format("inserir\n%d", uniqueID));
+			bAction.addActionListener(this);
+			bAction.setActionCommand("inserir");
 		}
-		bAction.addActionListener(Sistema.getInstance());
 		buttons.add(bAction);
 		
 		big.add(Box.createRigidArea(new Dimension(0, 50)));

@@ -1,6 +1,5 @@
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -8,7 +7,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class MainIHC extends JPanel implements ChangeListener {
+public class MainIHC extends JPanel implements ActionListener, ChangeListener {
 	protected JTabbedPane pisos;
 	protected JPanel big, controle;
 	
@@ -39,15 +38,15 @@ public class MainIHC extends JPanel implements ChangeListener {
 		controle.setLayout(new GridLayout(0, 1, 0, 5));
 		
 		entradaB = new JButton("Entrar novo carro");
-		entradaB.addActionListener(Sistema.getInstance());
+		entradaB.addActionListener(this);
 		entradaB.setMnemonic(KeyEvent.VK_E);
-		entradaB.setActionCommand("inserirNew");
+		entradaB.setActionCommand("entrar");
 		entradaB.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 
 		saidaB = new JButton("Sair carro");
-		saidaB.addActionListener(Sistema.getInstance());
+		saidaB.addActionListener(this);
 		saidaB.setMnemonic(KeyEvent.VK_S);
-		saidaB.setActionCommand("removerNew");
+		saidaB.setActionCommand("sair");
 		saidaB.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		
 		controle.add(entradaB);
@@ -60,7 +59,7 @@ public class MainIHC extends JPanel implements ChangeListener {
 		add(big);
 	}
 	
-	/*public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e) {
 		String cmd = e.getActionCommand();
 		if (cmd.equals("entrar")) {
 			popup = new JFrame("Entrar novo veiculo");
@@ -73,19 +72,9 @@ public class MainIHC extends JPanel implements ChangeListener {
 			popup.pack();
 			popup.setVisible(true);
 		}
-	}*/
+	}
 	
 	public void refreshView() {
-		//Piso pt = PisoT.getInstance();
-		//Piso p1 = Piso1.getInstance();
-		//JPanel p = (JPanel)this.getComponent(0);
-		//JTabbedPane nova = new JTabbedPane();
-		//nova.addTab("Terreo", pt.assembleVagas());
-		//nova.addTab("Piso 1", p1.assembleVagas());
-	
-		//JTabbedPane t = (JTabbedPane)p.getComponent(0);
-		//t.setTabComponentAt(0, pt.assembleVagas());
-		//t.setTabComponentAt(1, p1.assembleVagas());
 		rebuildView();
 		revalidate();
 		repaint();
@@ -93,8 +82,6 @@ public class MainIHC extends JPanel implements ChangeListener {
 	
 	public void stateChanged(ChangeEvent e) {
 		JTabbedPane pane = (JTabbedPane) e.getSource();
-        System.out.println("Selected Tab: " + pane.getSelectedIndex());
         this.selectedTab = pane.getSelectedIndex();
-        // Prints the string 3 times if there are 3 tabs etc
     }
 }

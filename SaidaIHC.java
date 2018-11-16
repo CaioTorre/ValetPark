@@ -132,7 +132,7 @@ public class SaidaIHC extends JPanel implements ActionListener {
 			int result;
 			try {
 				Epoch ep = Epoch.parseFromString(tempo_string);
-				result = s.saiCarro(placa, ep);
+				s.saiCarro(placa, ep);
 				//System.out.println("OK");
 				JOptionPane.showMessageDialog(null, "Veiculo removido com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE); 
 				

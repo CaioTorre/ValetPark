@@ -7,29 +7,33 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
 
 public class VagaData implements ActionListener{
-	private boolean ocupado;
+	private boolean ocupado = false;
 	//private String placa;
 	//private int hh, mm, ss;
-	private VeiculoData veiculo;
+	private VeiculoData veiculo = null;
 	private int id;
 	private int tipo;
 	private int andar;
 	
 	public VagaData(int id, int tipo, int andar) {
 		//System.out.printf("Creating %d as %d\n", id, tipo);
-		this.ocupado = false;
+		//this.ocupado = false;
 		//this.placa = "";
 		//this.hh = -1;
 		//this.mm = -1;
 		//this.ss = -1;
-		this.veiculo = null;
+		//this.veiculo = null;
 		this.id = id;
 		this.tipo = tipo;
 		this.andar = andar;
+	}
+	
+	public VagaData(int id, int tipo, int andar, VeiculoData v) {
+		this(id, tipo, andar);
+		this.veiculo = v;
+		this.ocupado = true;
 	}
 	
 	public int getTipo() { return this.tipo; }
