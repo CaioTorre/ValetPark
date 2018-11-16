@@ -12,7 +12,7 @@ public class MainIHC extends JPanel implements ActionListener, ChangeListener {
 	protected JPanel big, controle;
 	
 	protected JButton entradaB, saidaB;
-	private JFrame master, popup;
+	private JFrame popup;
 	
 	private int selectedTab;
 	

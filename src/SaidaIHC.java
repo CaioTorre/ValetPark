@@ -8,14 +8,12 @@ import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
 
@@ -25,8 +23,6 @@ public class SaidaIHC extends JPanel implements ActionListener {
 	
 	private JFrame current;
 	
-	private int tipo_veiculo = 0;
-	
 	public SaidaIHC(JFrame f) {
 		Font font = new Font("FE-Schrift", Font.PLAIN, 42);
 		
@@ -35,7 +31,7 @@ public class SaidaIHC extends JPanel implements ActionListener {
 		JPanel big = new JPanel();
 		big.setLayout(new BoxLayout(big, BoxLayout.Y_AXIS));
 		big.setAlignmentX(CENTER_ALIGNMENT);
-		JLabel placaLabel, horaLabel, vagaLabel, tipoLabel;
+		JLabel placaLabel, horaLabel;//, vagaLabel, tipoLabel;
 		
 		placaLabel = new JLabel("Placa do carro:");
 		placaLabel.setAlignmentX(CENTER_ALIGNMENT);
@@ -129,7 +125,7 @@ public class SaidaIHC extends JPanel implements ActionListener {
 			String tempo_string = (String)fieldHorario.getText();
 			//System.out.printf("tempo = %s\n", tempo_string);
 			//System.out.printf("parsed = %d:%d:%d\n", hh, mm, ss);
-			int result;
+			//int result;
 			try {
 				Epoch ep = Epoch.parseFromString(tempo_string);
 				s.saiCarro(placa, ep);
