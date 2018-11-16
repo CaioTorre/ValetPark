@@ -17,6 +17,9 @@ public class Sistema {
 	public final static String p1Arq = "piso1.csv";
 	public final static String lgArq = "contabilidade.csv";
 	
+//	private double horaCarro, horaCaminhonete, horaMoto;
+	private double[] valores = { 1.0, 1.5, 0.7 };
+	
 	private Sistema() {
 		pt = PisoT.getInstance();
 		p1 = Piso1.getInstance();
@@ -113,23 +116,35 @@ public class Sistema {
 	
 	private void processaSaida(Piso p, VeiculoData paraRemover, Epoch e) throws PlacaNNEncontradaEX, DeltaTInvalidoEX {
 		Epoch res = p.tentaRemover(paraRemover);
-		float preco = calculaPreco(e.deltaE(res));
+		float preco = calculaPreco(e.deltaE(res), paraRemover.getTipo());
 		String placa = paraRemover.getPlaca();
 		String tipo = paraRemover.getTipoString();
 		contab.insertLog( new ContabLog(placa, tipo, res, e, preco) );
 		new NotinhaIHC(res, e, placa, tipo, preco);
 	}
 	
-	private float calculaPreco(Epoch delta) {
+	private float calculaPreco(Epoch delta, int tipoVeiculo) {
 		int t = delta.asEpoch();
 		if (t < 15 * 60) return (float)0.0; //15 minutos de graca
-		if (t < 60 * 60) return (float)7.0; //7 reais a primeira hora
-		if (t < 12 * 60 * 60) return (float)(7.0 + 3.0 * t / 12.0);
-		return (float)70.0; //Pernoite
+		return (float)(delta.getHh() * valores[tipoVeiculo]);
+		//if (t < 60 * 60) return (float)7.0; //7 reais a primeira hora
+		//if (t < 12 * 60 * 60) return (float)(7.0 + 3.0 * t / 12.0);
+		//return (float)70.0; //Pernoite
 	}
 	
 	public void refreshMain() {
 		MainIHC m = (MainIHC) screen;
 		m.refreshView();
 	}
+	
+	public void atualizaValores(double car, double cam, double mot) {
+//		horaCarro = car;
+//		horaCaminhonete = cam;
+//		horaMoto = mot;
+		valores[0] = car;
+		valores[1] = cam;
+		valores[2] = mot;
+	}
+	
+	public double[] getValores() { return valores; }
 }
