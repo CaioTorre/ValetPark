@@ -26,10 +26,10 @@ public class VagaInfoIHC extends JPanel implements ActionListener{
 	private int andar;
 	
 	private VagaData vaga;
-	private MainIHC ihc_pai;
+	//private MainIHC ihc_pai;
 	
-	public VagaInfoIHC(JFrame f, MainIHC m, VagaData vaga) {
-		ihc_pai = m;
+	public VagaInfoIHC(JFrame f, VagaData vaga) {
+		//ihc_pai = m;
 		buildIHC(f, vaga);
 		this.vaga = vaga;
 		this.andar = vaga.getAndar();
@@ -46,7 +46,7 @@ public class VagaInfoIHC extends JPanel implements ActionListener{
 		String cmd = a.getActionCommand();
 		if (cmd.equals("inserir")) {
 			popup = new JFrame("Entrar novo veiculo");
-			popup.setContentPane( new EntradaIHC(popup, ihc_pai, id, andar, tipo, this) );
+			popup.setContentPane( new EntradaIHC(popup, id, andar, tipo, this) );
 	        popup.pack();
 	        popup.setVisible(true);
 		} else if (cmd.equals("cancelar")) {

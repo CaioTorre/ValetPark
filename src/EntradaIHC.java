@@ -28,14 +28,14 @@ public class EntradaIHC extends JPanel implements ActionListener {
 	
 	private JFrame current;
 	private VagaInfoIHC tipo_pai;
-	private MainIHC ihc_pai;
+	//private MainIHC ihc_pai;
 	
 	private int tipo_veiculo = 0;
 	
 	private int andar;
 	
-	public EntradaIHC(JFrame f, MainIHC m) {
-		ihc_pai = m;
+	public EntradaIHC(JFrame f) {
+		//ihc_pai = m;
 		
 		Font font = new Font("FE-Schrift", Font.PLAIN, 42);
 		
@@ -163,8 +163,8 @@ public class EntradaIHC extends JPanel implements ActionListener {
 		add(big);
 	}
 	
-	public EntradaIHC(JFrame f, MainIHC m, int vaga, int andar, int tipo, VagaInfoIHC info) {
-		this(f, m);
+	public EntradaIHC(JFrame f, int vaga, int andar, int tipo, VagaInfoIHC info) {
+		this(f);
 		
 		//Fixando codigo da vaga
 		fieldVaga.setValue(String.format("%03d", vaga + 1));
@@ -216,7 +216,7 @@ public class EntradaIHC extends JPanel implements ActionListener {
 	
 	private void close() {
 		current.dispatchEvent(new WindowEvent(current, WindowEvent.WINDOW_CLOSING));
-		ihc_pai.onPopupClose();
+		//if (ihc_pai != null) ihc_pai.onPopupClose();
 	}
 	
 	public void actionPerformed(ActionEvent e) {
