@@ -50,7 +50,10 @@ public class VagaInfoIHC extends JPanel implements ActionListener{
 		} else if (cmd.equals("cancelar")) {
 			control.dispatchEvent(new WindowEvent(control, WindowEvent.WINDOW_CLOSING));
 		} else if (cmd.equals("remover")) {
-			
+			popup = new JFrame("Sair veiculo");
+			popup.setContentPane( new SaidaIHC(popup, fieldPlaca.getText(), this) );
+			popup.pack();
+			popup.setVisible(true);
 		}
 	}
 	

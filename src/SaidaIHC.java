@@ -22,6 +22,8 @@ public class SaidaIHC extends JPanel implements ActionListener {
 	private JButton bConfirma, bCancela;
 	
 	private JFrame current;
+	private VagaInfoIHC tipo_pai;
+	private boolean fixed;
 	
 	public SaidaIHC(JFrame f) {
 		Font font = new Font("FE-Schrift", Font.PLAIN, 42);
@@ -87,8 +89,20 @@ public class SaidaIHC extends JPanel implements ActionListener {
 		big.add(buttonPane);
 		
 		add(big);
+		fixed = false;
 	}
 
+	public SaidaIHC(JFrame f, String placa, VagaInfoIHC info) {
+		this(f);
+		
+		fixed = true;
+		this.tipo_pai = info;
+		
+		fieldPlaca.setValue(placa);
+		fieldPlaca.setEditable(false);
+		fieldPlaca.setEnabled(false);
+	}
+	
 	private MaskFormatter makeFormatter(String s) {
 		 MaskFormatter formatter = null;
 	        try {
@@ -101,7 +115,7 @@ public class SaidaIHC extends JPanel implements ActionListener {
 	}
 	
 	private void enableAll() {
-		fieldPlaca.setEditable(true);
+		if (fixed == false) { fieldPlaca.setEditable(true); }
 		fieldHorario.setEditable(true);
 	}
 	
@@ -121,7 +135,7 @@ public class SaidaIHC extends JPanel implements ActionListener {
 			current.dispatchEvent(new WindowEvent(current, WindowEvent.WINDOW_CLOSING));
 		} else if (cmd.equals("confirma")) {
 			disableAll();
-			String placa = fieldPlaca.getText();
+			String placa  = fieldPlaca.getText();
 			String tempo_string = (String)fieldHorario.getText();
 			//System.out.printf("tempo = %s\n", tempo_string);
 			//System.out.printf("parsed = %d:%d:%d\n", hh, mm, ss);
@@ -133,6 +147,7 @@ public class SaidaIHC extends JPanel implements ActionListener {
 				JOptionPane.showMessageDialog(null, "Veiculo removido com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE); 
 				
 				s.refreshMain();
+				if (tipo_pai != null) tipo_pai.rebuildIHC();
 				close();
 			} catch (HoraInvalidaEX ex) {
 				JOptionPane.showMessageDialog(null, "O horario inserido nao e valido", "Erro", JOptionPane.ERROR_MESSAGE); 

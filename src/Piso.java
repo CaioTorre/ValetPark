@@ -60,7 +60,8 @@ public abstract class Piso {
 		return -1;
 	}
 	
-	public Epoch tentaRemover(VeiculoData v) throws DeltaTInvalidoEX, PlacaNNEncontradaEX {
+	//public Epoch tentaRemover(VeiculoData v) throws DeltaTInvalidoEX, PlacaNNEncontradaEX {
+	public VeiculoData tentaRemover(VeiculoData v) throws DeltaTInvalidoEX, PlacaNNEncontradaEX {
 		for (VagaData vaga : vagas) {
 			if (vaga.getOcupado() && vaga.comparaPlaca(v)) {
 				VeiculoData removido = vaga.getVeiculo(); //vaga.desocupa();
@@ -72,8 +73,8 @@ public abstract class Piso {
 				} else if (delta.asEpoch() == 0) {
 					throw new DeltaTInvalidoEX();
 				} else {
-					vaga.desocupa();
-					return entrada;
+					return vaga.desocupa();
+					//return entrada;
 				}
 			}
 		}

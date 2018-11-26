@@ -42,7 +42,7 @@ public class Sistema {
 		if (hh < 0 || mm < 0 || mm > 59 || ss < 0 || ss > 59 || hh + mm + ss < 1) { throw new HoraInvalidaEX(); }
 		int res = -1;
 		try {
-			if (vaga < 101) { //Terreo
+			if (vaga < 100) { //Terreo
 				res = pt.tentaInserir(new VeiculoData(placa, new Epoch(hh, mm, ss), tipo), vaga);
 				pt.salvaPiso(ptArq);
 			} else { //Piso 1
@@ -115,10 +115,11 @@ public class Sistema {
 	}
 	
 	private void processaSaida(Piso p, VeiculoData paraRemover, Epoch e) throws PlacaNNEncontradaEX, DeltaTInvalidoEX {
-		Epoch res = p.tentaRemover(paraRemover);
-		float preco = calculaPreco(e.deltaE(res), paraRemover.getTipo());
+		VeiculoData anterior = p.tentaRemover(paraRemover);
+		Epoch res = anterior.getEpoch();
+		float preco = calculaPreco(e.deltaE(res), anterior.getTipo());
 		String placa = paraRemover.getPlaca();
-		String tipo = paraRemover.getTipoString();
+		String tipo = anterior.getTipoString();
 		contab.insertLog( new ContabLog(placa, tipo, res, e, preco) );
 		new NotinhaIHC(res, e, placa, tipo, preco);
 	}

@@ -260,7 +260,7 @@ public class EntradaIHC extends JPanel implements ActionListener {
 						enableAll();
 					} else { //OK
 						System.out.println("OK");
-						JOptionPane.showMessageDialog(null, "Veiculo inserido com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE); 
+						JOptionPane.showMessageDialog(null, String.format("Veiculo inserido com sucesso!\nVaga: %s\nPiso %s", VagaData.convertCoord(result), VagaData.floorName(result / 100)), "Sucesso", JOptionPane.INFORMATION_MESSAGE); 
 						
 						s.refreshMain();
 						if (tipo_pai != null) tipo_pai.rebuildIHC();
@@ -274,7 +274,7 @@ public class EntradaIHC extends JPanel implements ActionListener {
 						enableAll();
 					} else { //OK
 						System.out.println("OK");
-						JOptionPane.showMessageDialog(null, "Veiculo inserido com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE); 
+						JOptionPane.showMessageDialog(null, String.format("Veiculo inserido com sucesso!\nVaga: %s\nPiso %s", VagaData.convertCoord(result), VagaData.floorName(this.andar)), "Sucesso", JOptionPane.INFORMATION_MESSAGE); 
 						
 						s.refreshMain();
 						if (tipo_pai != null) tipo_pai.rebuildIHC();

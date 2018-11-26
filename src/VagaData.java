@@ -30,6 +30,16 @@ public class VagaData implements ActionListener{
 		this.andar = andar;
 	}
 	
+	public static String convertCoord(int id) {
+		int col = (id % 10) + 1;
+		int lin = (id / 10);
+		String res = String.format("%c%d", 'A' + lin, col);
+		//System.out.printf("Parsed %s from %d\n", res, id);
+		return res;
+	}
+	
+	public static String floorName(int f) { if (f == 0) { return "Terreo"; } else { return "1"; } }
+	
 	public VagaData(int id, int tipo, int andar, VeiculoData v) {
 		this(id, tipo, andar);
 		this.veiculo = v;
