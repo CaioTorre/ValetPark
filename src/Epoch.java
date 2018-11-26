@@ -88,7 +88,6 @@ public class Epoch {
 	public boolean isValid() {
 		boolean primer = !(hh < 0 || mm < 0 || mm > 59 || ss < 0 || ss > 59 || d < 0 || m < 0 || m > 11);
 		if (!primer) return false;
-		System.err.println("Passed primer");
 		if ((m == 0 || m == 2 || m == 4 || m == 6 || m == 7 || m == 9 || m == 11) && (d > 30)) return false;
 		if ((m == 1) && (d > 27)) return false;
 		if (d > 29) return false;
@@ -99,13 +98,13 @@ public class Epoch {
 		try {
 			int dia = Integer.parseInt("" + s.charAt(0)  + s.charAt(1) ) - 1;
 			int mes = Integer.parseInt("" + s.charAt(3)  + s.charAt(4) ) - 1;
-			if (dia < 1 || mes < 1) throw new BadEpochStringEX();
+			if (dia < 0 || mes < 0) throw new BadEpochStringEX();
 			int hh = Integer.parseInt(""  + s.charAt(6)  + s.charAt(7) );
 			int mm = Integer.parseInt(""  + s.charAt(9)  + s.charAt(10));
 			int ss = Integer.parseInt(""  + s.charAt(12) + s.charAt(13));
 			Epoch e = new Epoch(dia, mes, hh, mm, ss);
 			if (!e.isValid()) throw new BadEpochStringEX();
-			System.err.println("Created epoch: " + e.toString());
+			//System.err.println("Created epoch: " + e.toString());
 			return e;
 		} catch (NumberFormatException ex) {
 			throw new BadEpochStringEX();

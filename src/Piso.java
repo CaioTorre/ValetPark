@@ -40,24 +40,28 @@ public abstract class Piso {
 	}
 	
 
-	public int tentaInserir(VeiculoData v) {
+	public int tentaInserir(VeiculoData v) throws InsertFailEX {
 		for (VagaData vaga : vagas) {
 			if (!vaga.getOcupado() && vaga.getTipo() == v.getTipo()) {
 				vaga.ocupa(v);
 				return vaga.getID();
 			}
 		}
+		//throw new InsertFailEX("Piso lotado");
 		return -1;
 	}
 	
-	public int tentaInserir(VeiculoData v, int vindex) {
+	public int tentaInserir(VeiculoData v, int vindex) throws InsertFailEX {
 		VagaData vaga = vagas.get(vindex);
-		System.err.printf("Getting vaga @%d - %d...",  vindex, vaga.getID());
+		//System.err.printf("Getting vaga @%d - %d...",  vindex, vaga.getID());
 		if (!vaga.getOcupado() && vaga.getTipo() == v.getTipo()) {
 			vaga.ocupa(v);
 			return vaga.getID();
+		} else {
+			if (vaga.getOcupado()) { throw new InsertFailEX("Vaga ocupada"); }
+			throw new InsertFailEX("Tipo incompativel");
 		}
-		return -1;
+		//return -1;
 	}
 	
 	//public Epoch tentaRemover(VeiculoData v) throws DeltaTInvalidoEX, PlacaNNEncontradaEX {

@@ -26,8 +26,10 @@ public class VagaInfoIHC extends JPanel implements ActionListener{
 	private int andar;
 	
 	private VagaData vaga;
+	private MainIHC ihc_pai;
 	
-	public VagaInfoIHC(JFrame f, VagaData vaga) {
+	public VagaInfoIHC(JFrame f, MainIHC m, VagaData vaga) {
+		ihc_pai = m;
 		buildIHC(f, vaga);
 		this.vaga = vaga;
 		this.andar = vaga.getAndar();
@@ -44,7 +46,7 @@ public class VagaInfoIHC extends JPanel implements ActionListener{
 		String cmd = a.getActionCommand();
 		if (cmd.equals("inserir")) {
 			popup = new JFrame("Entrar novo veiculo");
-			popup.setContentPane( new EntradaIHC(popup, id, andar, tipo, this) );
+			popup.setContentPane( new EntradaIHC(popup, ihc_pai, id, andar, tipo, this) );
 	        popup.pack();
 	        popup.setVisible(true);
 		} else if (cmd.equals("cancelar")) {
@@ -59,7 +61,7 @@ public class VagaInfoIHC extends JPanel implements ActionListener{
 	
 	private void buildIHC(JFrame f, VagaData vaga) {
 		this.removeAll();
-		Font bigFont = new Font("FE-Schrift", Font.PLAIN, 42);
+		//Font bigFont = new Font("FE-Schrift", Font.PLAIN, 42);
 		boolean ocupada = vaga.getOcupado();
 		
 		big = new JPanel();
@@ -75,7 +77,7 @@ public class VagaInfoIHC extends JPanel implements ActionListener{
 		buttons.add(bSair);
 		buttons.add(Box.createHorizontalGlue());
 		if (ocupada) {
-			big.setBackground(Color.getHSBColor((float)(353.0/360.0), (float)0.69, (float)1.0));
+			big.setBackground(Facade.colorOcupado);
 			big.add(Box.createRigidArea(new Dimension(0, 50)));
 			big.add(labelMaker("Vaga ocupada"));
 			
@@ -84,7 +86,7 @@ public class VagaInfoIHC extends JPanel implements ActionListener{
 			fieldPlaca = new JTextField(vaga.getVeiculo().getPlaca());
 			fieldPlaca.setEditable(false);
 			fieldPlaca.setHorizontalAlignment(JTextField.CENTER);
-			fieldPlaca.setFont(bigFont);
+			fieldPlaca.setFont(Facade.bigFont);
 			big.add(fieldPlaca);
 			
 			big.add(Box.createRigidArea(new Dimension(0, 50)));
@@ -92,7 +94,7 @@ public class VagaInfoIHC extends JPanel implements ActionListener{
 			fieldHorario = new JTextField(vaga.getVeiculo().getEpoch().toString());
 			fieldHorario.setEditable(false);
 			fieldHorario.setHorizontalAlignment(JTextField.CENTER);
-			fieldHorario.setFont(bigFont);
+			fieldHorario.setFont(Facade.bigFont);
 			big.add(fieldHorario);
 			
 			big.add(Box.createRigidArea(new Dimension(0, 50)));
@@ -100,17 +102,17 @@ public class VagaInfoIHC extends JPanel implements ActionListener{
 			fieldTipo = new JTextField(vaga.getVeiculo().getTipoString());
 			fieldTipo.setEditable(false);
 			fieldTipo.setHorizontalAlignment(JTextField.CENTER);
-			fieldTipo.setFont(bigFont);
+			fieldTipo.setFont(Facade.bigFont);
 			big.add(fieldTipo);
 
 			bAction = new JButton("Remover veiculo");
 			bAction.addActionListener(this);
 			bAction.setActionCommand("remover");
 		} else {
-			big.setBackground(Color.getHSBColor((float)(140.0/360.0), (float)0.69, (float)1.0));
+			big.setBackground(Facade.colorLivre);
 			big.add(Box.createRigidArea(new Dimension(0, 200)));
 			JLabel temp = labelMaker("Vaga livre");
-			temp.setFont(bigFont);
+			temp.setFont(Facade.bigFont);
 			big.add(temp);
 			bAction = new JButton("Inserir veiculo");
 			bAction.addActionListener(this);

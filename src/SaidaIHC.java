@@ -129,37 +129,30 @@ public class SaidaIHC extends JPanel implements ActionListener {
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		Sistema s = Sistema.getInstance();
 		String cmd = e.getActionCommand();
 		if (cmd.equals("cancela")) {
-			current.dispatchEvent(new WindowEvent(current, WindowEvent.WINDOW_CLOSING));
+			close();
 		} else if (cmd.equals("confirma")) {
 			disableAll();
 			String placa  = fieldPlaca.getText();
-			if (!placa.contains("_")) {
-				String tempo_string = (String)fieldHorario.getText();
-				//System.out.printf("tempo = %s\n", tempo_string);
-				//System.out.printf("parsed = %d:%d:%d\n", hh, mm, ss);
-				//int result;
-				try {
-					Epoch ep = Epoch.parseFromString(tempo_string);
-					s.saiCarro(placa, ep);
-					//System.out.println("OK");
+			String tempo_string = fieldHorario.getText();
+			try {
+				if (!placa.contains("_")) throw new PlacaInvalidaEX();
+					Facade.getInstance().removeVeiculo(placa, tempo_string);
 					JOptionPane.showMessageDialog(null, "Veiculo removido com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE); 
 					
-					s.refreshMain();
+					Facade.getInstance().refreshMainIHC();
 					if (tipo_pai != null) tipo_pai.rebuildIHC();
 					close();
-				} catch (HoraInvalidaEX ex) {
-					JOptionPane.showMessageDialog(null, "O horario inserido nao e valido", "Erro", JOptionPane.ERROR_MESSAGE); 
-				} catch (DeltaTInvalidoEX ex) {
-					JOptionPane.showMessageDialog(null, "O horario de saida nao pode ser anterior ao de entrada", "Erro", JOptionPane.ERROR_MESSAGE); 
-				} catch (PlacaNNEncontradaEX ex) {
-					JOptionPane.showMessageDialog(null, "Nao foi encontrado um veiculo com a placa " + placa, "Erro", JOptionPane.ERROR_MESSAGE); 
-				} catch (BadEpochStringEX ex) {
-					JOptionPane.showMessageDialog(null, "O horario inserido nao e valido", "Erro", JOptionPane.ERROR_MESSAGE); 
-				}
-			} else {
+			} catch (HoraInvalidaEX ex) {
+				JOptionPane.showMessageDialog(null, "O horario inserido nao e valido", "Erro", JOptionPane.ERROR_MESSAGE); 
+			} catch (DeltaTInvalidoEX ex) {
+				JOptionPane.showMessageDialog(null, "O horario de saida nao pode ser anterior ao de entrada", "Erro", JOptionPane.ERROR_MESSAGE); 
+			} catch (PlacaNNEncontradaEX ex) {
+				JOptionPane.showMessageDialog(null, "Nao foi encontrado um veiculo com a placa " + placa, "Erro", JOptionPane.ERROR_MESSAGE); 
+			} catch (BadEpochStringEX ex) {
+				JOptionPane.showMessageDialog(null, "O horario inserido nao e valido", "Erro", JOptionPane.ERROR_MESSAGE); 
+			} catch (PlacaInvalidaEX ex) {
 				JOptionPane.showMessageDialog(null, "A placa inserida nao e valida", "Erro", JOptionPane.ERROR_MESSAGE); 
 			}
 			enableAll();

@@ -22,6 +22,27 @@ public class MainIHC extends JPanel implements ActionListener, ChangeListener {
 		//test
 	}
 	
+	private void setAllStates(boolean state) {
+		entradaB.setEnabled(state);
+		saidaB.setEnabled(state);
+		logB.setEnabled(state);
+		valoresB.setEnabled(state);
+		JPanel pt = (JPanel) pisos.getTabComponentAt(0);
+		for (Component c : pt.getComponents()) {
+			if (c instanceof JButton) {
+				JButton b = (JButton) c;
+				b.setEnabled(state);
+			}
+		}
+		JPanel p1 = (JPanel) pisos.getTabComponentAt(1);
+		for (Component c : p1.getComponents()) {
+			if (c instanceof JButton) {
+				JButton b = (JButton) c;
+				b.setEnabled(state);
+			}
+		}
+	}
+	
 	private void rebuildView() {
 		this.removeAll();
 		
@@ -78,7 +99,7 @@ public class MainIHC extends JPanel implements ActionListener, ChangeListener {
 		String cmd = e.getActionCommand();
 		if (cmd.equals("entrar")) {
 			popup = new JFrame("Entrar novo veiculo");
-			newPopup( new EntradaIHC(popup) );
+			newPopup( new EntradaIHC(popup, this) );
 		} else if (cmd.equals("logs")) {
 			popup = new JFrame("Entradas/saidas de veiculos");
 			newPopup( new ContabilidadeIHC() );
@@ -96,6 +117,8 @@ public class MainIHC extends JPanel implements ActionListener, ChangeListener {
 		popup.setContentPane( content );
 		popup.pack();
 		popup.setVisible(true);
+		setAllStates(false);
+		//Facade.getInstance().addNewPopup(popup);
 	}
 	
 	public void refreshView() {
@@ -108,4 +131,8 @@ public class MainIHC extends JPanel implements ActionListener, ChangeListener {
 		JTabbedPane pane = (JTabbedPane) e.getSource();
         this.selectedTab = pane.getSelectedIndex();
     }
+	
+	public void onPopupClose() {
+		setAllStates(true);
+	}
 }

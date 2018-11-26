@@ -18,13 +18,6 @@ public class VagaData implements ActionListener{
 	private int andar;
 	
 	public VagaData(int id, int tipo, int andar) {
-		//System.out.printf("Creating %d as %d\n", id, tipo);
-		//this.ocupado = false;
-		//this.placa = "";
-		//this.hh = -1;
-		//this.mm = -1;
-		//this.ss = -1;
-		//this.veiculo = null;
 		this.id = id;
 		this.tipo = tipo;
 		this.andar = andar;
@@ -34,7 +27,6 @@ public class VagaData implements ActionListener{
 		int col = (id % 10) + 1;
 		int lin = (id / 10);
 		String res = String.format("%c%d", 'A' + lin, col);
-		//System.out.printf("Parsed %s from %d\n", res, id);
 		return res;
 	}
 	
@@ -90,7 +82,7 @@ public class VagaData implements ActionListener{
 		
 		JButton out = new JButton(content);
 		
-		if (this.ocupado) { out.setBackground(Color.RED); } else { out.setBackground(Color.GREEN); }
+		if (this.ocupado) { out.setBackground(Facade.colorOcupado); } else { out.setBackground(Facade.colorLivre); }
 		out.setOpaque(true);
 		out.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		out.setPreferredSize(new Dimension(90, 50));

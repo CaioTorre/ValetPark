@@ -17,8 +17,7 @@ public class Sistema {
 	public final static String p1Arq = "piso1.csv";
 	public final static String lgArq = "contabilidade.csv";
 	
-//	private double horaCarro, horaCaminhonete, horaMoto;
-	private double[] valores = { 1.0, 1.5, 0.7 };
+	private double[] valores = { 7.0, 8.5, 5.0 };
 	
 	private Sistema() {
 		pt = PisoT.getInstance();
@@ -38,13 +37,14 @@ public class Sistema {
 	public Contabilidade getContabilidade() { return contab; }
 	
 	//public int entraCarro(String placa, int dia, int mes, int hh, int mm, int ss, int tipo, int vaga) throws VagaInvalidaEX, HoraInvalidaEX {
-	public int entraCarro(String placa, Epoch ep, int tipo, int vaga) throws VagaInvalidaEX, HoraInvalidaEX {
+	public int entraCarro(String placa, String ep_str, int tipo, int vaga) throws VagaInvalidaEX, HoraInvalidaEX, BadEpochStringEX, InsertFailEX {
 		if (vaga < 1 || vaga > 200) { throw new VagaInvalidaEX(); }
 		//if (hh < 0 || mm < 0 || mm > 59 || ss < 0 || ss > 59 || hh + mm + ss < 1) { throw new HoraInvalidaEX(); }
 		int res = -1;
-		//Epoch ep = new Epoch(dia, mes, hh, mm, ss);
-		if (!ep.isValid()) { throw new HoraInvalidaEX(); }
 		try {
+			Epoch ep = Epoch.parseFromString(ep_str);
+			//Epoch ep = new Epoch(dia, mes, hh, mm, ss);
+			if (!ep.isValid()) { throw new HoraInvalidaEX(); }
 			if (vaga < 100) { //Terreo
 				res = pt.tentaInserir(new VeiculoData(placa, ep, tipo), vaga);
 				pt.salvaPiso(ptArq);
@@ -55,16 +55,28 @@ public class Sistema {
 		} catch (FileNotFoundException ex) {
 			System.err.println("File not found when saving one of the files");
 			ex.printStackTrace(System.err);
+		} catch (BadEpochStringEX ex) {
+			System.err.println("Got bad epoch string");
+			throw ex;
+		} catch (InsertFailEX ex) {
+			throw ex;
 		}
 		return res;
 	}
 	
 	//public int entraCarro(String placa, int dia, int mes, int hh, int mm, int ss, int tipo) throws HoraInvalidaEX {
-	public int entraCarro(String placa, Epoch ep, int tipo) throws HoraInvalidaEX {
+	public int entraCarro(String placa, String ep_str, int tipo) throws HoraInvalidaEX, BadEpochStringEX, InsertFailEX {
 		//if (hh < 0 || mm < 0 || mm > 59 || ss < 0 || ss > 59 || hh + mm + ss < 1) { throw new HoraInvalidaEX(); }
 		int res;
 		//Epoch ep = new Epoch(dia, mes, hh, mm, ss);
-		if (!ep.isValid()) { throw new HoraInvalidaEX(); }
+		Epoch ep;
+		try {
+			ep = Epoch.parseFromString(ep_str);
+			if (!ep.isValid()) { throw new HoraInvalidaEX(); }
+		} catch (BadEpochStringEX ex) {
+			System.err.println("Got bad epoch string");
+			throw ex;
+		}
 		res = pt.tentaInserir(new VeiculoData(placa, ep, tipo));
 		if (res > -1) {
 			try {
@@ -83,6 +95,8 @@ public class Sistema {
 				System.err.println("File not found when saving p1");
 				e.printStackTrace(System.err);
 			}
+		} else {
+			throw new InsertFailEX("Estacionamento cheio");
 		}
 		return res;
 	}
@@ -127,13 +141,13 @@ public class Sistema {
 		String placa = paraRemover.getPlaca();
 		String tipo = anterior.getTipoString();
 		contab.insertLog( new ContabLog(placa, tipo, res, e, preco) );
-		new NotinhaIHC(res, e, placa, tipo, preco);
+		new NotinhaIHC(res.toString(), e.toString(), placa, tipo, preco);
 	}
 	
 	private float calculaPreco(Epoch delta, int tipoVeiculo) {
 		int t = delta.asEpoch();
 		if (t < 15 * 60) return (float)0.0; //15 minutos de graca
-		return (float)(delta.getHh() * valores[tipoVeiculo]);
+		return (float)((t / 3600) * valores[tipoVeiculo]);
 		//if (t < 60 * 60) return (float)7.0; //7 reais a primeira hora
 		//if (t < 12 * 60 * 60) return (float)(7.0 + 3.0 * t / 12.0);
 		//return (float)70.0; //Pernoite
@@ -143,6 +157,11 @@ public class Sistema {
 		MainIHC m = (MainIHC) screen;
 		m.refreshView();
 	}
+	
+	/*public void setAllStatesMainIHC(boolean state) {
+		MainIHC m = (MainIHC) screen;
+		m.setAllStates(state);
+	}*/
 	
 	public void atualizaValores(double car, double cam, double mot) {
 //		horaCarro = car;

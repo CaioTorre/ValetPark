@@ -28,12 +28,15 @@ public class EntradaIHC extends JPanel implements ActionListener {
 	
 	private JFrame current;
 	private VagaInfoIHC tipo_pai;
+	private MainIHC ihc_pai;
 	
 	private int tipo_veiculo = 0;
 	
 	private int andar;
 	
-	public EntradaIHC(JFrame f) {
+	public EntradaIHC(JFrame f, MainIHC m) {
+		ihc_pai = m;
+		
 		Font font = new Font("FE-Schrift", Font.PLAIN, 42);
 		
 		f.setPreferredSize(new Dimension(500, 500));
@@ -159,29 +162,9 @@ public class EntradaIHC extends JPanel implements ActionListener {
 		
 		add(big);
 	}
-
-	/*public EntradaIHC(JFrame f, VeiculoData veiculo) {
-		this(f);
-		
-		fieldPlaca.setValue(veiculo.getPlaca());
-		fieldPlaca.setEditable(false);
-		
-		rbCarro.setSelected(false);
-		rbCaminhonete.setSelected(false);
-		rbMoto.setSelected(false);
-		if (veiculo.getTipo() == 0) { rbCarro.setSelected(true); }
-		if (veiculo.getTipo() == 1) { rbCaminhonete.setSelected(true); }
-		if (veiculo.getTipo() == 2) { rbMoto.setSelected(true); }
-		rbCarro.setEnabled(false);
-		rbCaminhonete.setEnabled(false);
-		rbMoto.setEnabled(false);
-		
-		revalidate();
-		repaint();
-	}*/
 	
-	public EntradaIHC(JFrame f, int vaga, int andar, int tipo, VagaInfoIHC info) {
-		this(f);
+	public EntradaIHC(JFrame f, MainIHC m, int vaga, int andar, int tipo, VagaInfoIHC info) {
+		this(f, m);
 		
 		//Fixando codigo da vaga
 		fieldVaga.setValue(String.format("%03d", vaga + 1));
@@ -233,70 +216,42 @@ public class EntradaIHC extends JPanel implements ActionListener {
 	
 	private void close() {
 		current.dispatchEvent(new WindowEvent(current, WindowEvent.WINDOW_CLOSING));
+		ihc_pai.onPopupClose();
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		Sistema s = Sistema.getInstance();
 		String cmd = e.getActionCommand();
 		if (cmd.equals("cancela")) {
-			current.dispatchEvent(new WindowEvent(current, WindowEvent.WINDOW_CLOSING));
+			close();
 		} else if (cmd.equals("confirma")) {
 			disableAll();
 			String placa = fieldPlaca.getText();
-			if (!placa.contains("_")) {
-				String tempo_string = (String)fieldHorario.getText();
-				//System.out.printf("tempo = %s\n", tempo_string);
-				/*int dia = Integer.parseInt("" + tempo_string.charAt(0) +  tempo_string.charAt(1) ) - 1;
-				int mes = Integer.parseInt("" + tempo_string.charAt(3) +  tempo_string.charAt(4) ) - 1;
-				int hh = Integer.parseInt("" +  tempo_string.charAt(6) +  tempo_string.charAt(7) );
-				int mm = Integer.parseInt("" +  tempo_string.charAt(9) +  tempo_string.charAt(10));
-				int ss = Integer.parseInt("" +  tempo_string.charAt(12) + tempo_string.charAt(13));*/
-				//int hh = Integer.parseInt("" + tempo_string.charAt(0) + tempo_string.charAt(1));
-				//int mm = Integer.parseInt("" + tempo_string.charAt(3) + tempo_string.charAt(4));
-				//int ss = Integer.parseInt("" + tempo_string.charAt(6) + tempo_string.charAt(7));
-				//System.out.printf("parsed = %d:%d:%d\n", hh, mm, ss);
-				int result;
-				try {
-					Epoch ep = Epoch.parseFromString(tempo_string);
-					if (rbAuto.isSelected()) {
-						result = s.entraCarro(placa, ep, tipo_veiculo);
-						if (result == -1) { //Cheio
-							System.out.println("Cheio");
-							JOptionPane.showMessageDialog(null, "Estacionamento lotado!", "Erro", JOptionPane.ERROR_MESSAGE); 
-							
-							enableAll();
-						} else { //OK
-							System.out.println("OK");
-							JOptionPane.showMessageDialog(null, String.format("Veiculo inserido com sucesso!\nVaga: %s\nPiso %s", VagaData.convertCoord(result), VagaData.floorName(result / 100)), "Sucesso", JOptionPane.INFORMATION_MESSAGE); 
-							
-							s.refreshMain();
-							if (tipo_pai != null) tipo_pai.rebuildIHC();
-							close();
-						}
-					} else {
-						int vaga = Integer.parseInt((String)fieldVaga.getText()) - 1;
-						result = s.entraCarro(placa, ep, tipo_veiculo, vaga + this.andar * 100);
-						if (result == -1) { //Vaga ocupada
-							System.out.println("Ocupada");
-							enableAll();
-						} else { //OK
-							System.out.println("OK");
-							JOptionPane.showMessageDialog(null, String.format("Veiculo inserido com sucesso!\nVaga: %s\nPiso %s", VagaData.convertCoord(result), VagaData.floorName(this.andar)), "Sucesso", JOptionPane.INFORMATION_MESSAGE); 
-							
-							s.refreshMain();
-							if (tipo_pai != null) tipo_pai.rebuildIHC();
-							close();
-						}
-					}
-				} catch (VagaInvalidaEX ex) {
-					JOptionPane.showMessageDialog(null, "A vaga selecionada nao e compativel com o tipo de veiculo", "Erro", JOptionPane.ERROR_MESSAGE); 
-				} catch (HoraInvalidaEX ex) {
-					JOptionPane.showMessageDialog(null, "O horario inserido nao e valido", "Erro", JOptionPane.ERROR_MESSAGE); 
-				} catch (BadEpochStringEX e1) {
-					JOptionPane.showMessageDialog(null, "O horario inserido nao e valido", "Erro", JOptionPane.ERROR_MESSAGE); 
+			String tempo_string = fieldHorario.getText();
+			int result;
+			try {
+				if (placa.contains("_")) throw new PlacaInvalidaEX();
+				if (rbAuto.isSelected()) {
+					result = Facade.getInstance().insereVeiculo(placa, tempo_string, tipo_veiculo);
+				} else {
+					int vaga = Integer.parseInt((String)fieldVaga.getText()) - 1;
+					result = Facade.getInstance().insereVeiculo(placa, tempo_string, tipo_veiculo, vaga + this.andar * 100);
 				}
-			} else {
+				System.err.println("Insert OK");
+				JOptionPane.showMessageDialog(null, String.format("Veiculo inserido com sucesso!\nVaga: %s\nPiso %s", VagaData.convertCoord(result), VagaData.floorName(result / 100)), "Sucesso", JOptionPane.INFORMATION_MESSAGE); 
+				
+				Facade.getInstance().refreshMainIHC();
+				if (tipo_pai != null) tipo_pai.rebuildIHC();
+				close();
+			} catch (PlacaInvalidaEX ex) {
 				JOptionPane.showMessageDialog(null, "A placa inserida nao e valida", "Erro", JOptionPane.ERROR_MESSAGE); 
+			} catch (HoraInvalidaEX ex) {
+				JOptionPane.showMessageDialog(null, "O horario inserido nao e valido", "Erro", JOptionPane.ERROR_MESSAGE); 
+			} catch (BadEpochStringEX ex) {
+				JOptionPane.showMessageDialog(null, "O horario inserido nao e valido", "Erro", JOptionPane.ERROR_MESSAGE); 
+			} catch (InsertFailEX ex) {
+				JOptionPane.showMessageDialog(null, "Nao foi possivel inserir o veiculo\n"+ex.toString(), "Erro", JOptionPane.ERROR_MESSAGE); 
+			} catch (VagaInvalidaEX ex) {
+				JOptionPane.showMessageDialog(null, "A vaga selecionada nao e compativel com o tipo de veiculo", "Erro", JOptionPane.ERROR_MESSAGE); 
 			}
 			enableAll();
 		}	else if (cmd.equals("tipo_carro"))			{ tipo_veiculo = 0; }

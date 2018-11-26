@@ -18,7 +18,8 @@ public class ContabilidadeIHC extends JPanel {
 		
 		this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		String[] colunas = {"Placa", "Tipo", "Entrada", "Saida", "Valor"};
-		Object[][] precursor = Sistema.getInstance().getContabilidade().getRows();
+		//Object[][] precursor = Sistema.getInstance().getContabilidade().getRows();
+		Object[][] precursor = Facade.getInstance().getContabilidadePrecursor();
 		
 		dados = new JTable(precursor, colunas);
 		scroll = new JScrollPane(dados);

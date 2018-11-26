@@ -8,8 +8,8 @@ public class NotinhaIHC extends JFrame {
 	private JLabel text;
 	private JPanel self;
 	
-	public NotinhaIHC(Epoch entrada, Epoch saida, String placa, String tipoVeiculo, float preco) {
-		String contents = "<html><div style='text-align: center;'><br><br><br>Veiculo - " + tipoVeiculo + "<br>Placa " + placa + "<br><br>Horario de entrada: " + entrada.toString() + "<br>Horario de saida: " + saida.toString() + "<br><br>Total: " + String.format("R$%.2f", preco) + "<br><br><br></div></html>";
+	public NotinhaIHC(String entrada, String saida, String placa, String tipoVeiculo, float preco) {
+		String contents = "<html><div style='text-align: center;'><br><br><br>Veiculo - " + tipoVeiculo + "<br>Placa " + placa + "<br><br>Horario de entrada: " + entrada + "<br>Horario de saida: " + saida + "<br><br>Total: " + String.format("R$%.2f", preco) + "<br><br><br></div></html>";
 		text = new JLabel(contents);
 		text.setAlignmentX(CENTER_ALIGNMENT);
 		
