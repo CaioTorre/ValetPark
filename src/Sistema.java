@@ -37,16 +37,19 @@ public class Sistema {
 	
 	public Contabilidade getContabilidade() { return contab; }
 	
-	public int entraCarro(String placa, int hh, int mm, int ss, int tipo, int vaga) throws VagaInvalidaEX, HoraInvalidaEX {
+	//public int entraCarro(String placa, int dia, int mes, int hh, int mm, int ss, int tipo, int vaga) throws VagaInvalidaEX, HoraInvalidaEX {
+	public int entraCarro(String placa, Epoch ep, int tipo, int vaga) throws VagaInvalidaEX, HoraInvalidaEX {
 		if (vaga < 1 || vaga > 200) { throw new VagaInvalidaEX(); }
-		if (hh < 0 || mm < 0 || mm > 59 || ss < 0 || ss > 59 || hh + mm + ss < 1) { throw new HoraInvalidaEX(); }
+		//if (hh < 0 || mm < 0 || mm > 59 || ss < 0 || ss > 59 || hh + mm + ss < 1) { throw new HoraInvalidaEX(); }
 		int res = -1;
+		//Epoch ep = new Epoch(dia, mes, hh, mm, ss);
+		if (!ep.isValid()) { throw new HoraInvalidaEX(); }
 		try {
 			if (vaga < 100) { //Terreo
-				res = pt.tentaInserir(new VeiculoData(placa, new Epoch(hh, mm, ss), tipo), vaga);
+				res = pt.tentaInserir(new VeiculoData(placa, ep, tipo), vaga);
 				pt.salvaPiso(ptArq);
 			} else { //Piso 1
-				res = p1.tentaInserir(new VeiculoData(placa, new Epoch(hh, mm, ss), tipo), vaga - 100);
+				res = p1.tentaInserir(new VeiculoData(placa, ep, tipo), vaga - 100);
 				p1.salvaPiso(p1Arq);
 			}
 		} catch (FileNotFoundException ex) {
@@ -56,10 +59,13 @@ public class Sistema {
 		return res;
 	}
 	
-	public int entraCarro(String placa, int hh, int mm, int ss, int tipo) throws HoraInvalidaEX {
-		if (hh < 0 || mm < 0 || mm > 59 || ss < 0 || ss > 59 || hh + mm + ss < 1) { throw new HoraInvalidaEX(); }
+	//public int entraCarro(String placa, int dia, int mes, int hh, int mm, int ss, int tipo) throws HoraInvalidaEX {
+	public int entraCarro(String placa, Epoch ep, int tipo) throws HoraInvalidaEX {
+		//if (hh < 0 || mm < 0 || mm > 59 || ss < 0 || ss > 59 || hh + mm + ss < 1) { throw new HoraInvalidaEX(); }
 		int res;
-		res = pt.tentaInserir(new VeiculoData(placa, new Epoch(hh, mm, ss), tipo));
+		//Epoch ep = new Epoch(dia, mes, hh, mm, ss);
+		if (!ep.isValid()) { throw new HoraInvalidaEX(); }
+		res = pt.tentaInserir(new VeiculoData(placa, ep, tipo));
 		if (res > -1) {
 			try {
 				pt.salvaPiso(ptArq);
@@ -69,7 +75,7 @@ public class Sistema {
 			}
 			return res;
 		}
-		res = p1.tentaInserir(new VeiculoData(placa, new Epoch(hh, mm, ss), tipo));
+		res = p1.tentaInserir(new VeiculoData(placa, ep, tipo));
 		if (res > -1) {
 			try {
 				p1.salvaPiso(p1Arq);
@@ -84,7 +90,7 @@ public class Sistema {
 	public void saiCarro(String placa, Epoch e) throws HoraInvalidaEX, DeltaTInvalidoEX, PlacaNNEncontradaEX {
 		boolean gotIt = false;
 		VeiculoData paraRemover = new VeiculoData(placa, e, 0);
-		if (!paraRemover.getEpoch().isValid()) throw new HoraInvalidaEX();
+		if (!e.isValid()) throw new HoraInvalidaEX();
 		try {
 			processaSaida(pt, paraRemover, e);
 			gotIt = true;
