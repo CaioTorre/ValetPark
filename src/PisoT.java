@@ -10,7 +10,7 @@ public class PisoT extends Piso {
 	
 	private PisoT() {
 		try {
-			carregaPiso(Sistema.ptArq);
+			carregaPiso(Sistema.ptArq, 0);
 		} catch (FileNotFoundException ex) {
 			System.err.println("Arquivo nao foi encontrado, criando piso terreo vazio");
 			criaVazio();

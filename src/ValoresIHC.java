@@ -149,7 +149,7 @@ public class ValoresIHC extends JPanel implements ActionListener {
 			double cam = Double.parseDouble(camStr.substring(2));
 			double mot = Double.parseDouble(motStr.substring(2));
 			Sistema.getInstance().atualizaValores(car, cam, mot);
-			System.err.printf("car = %f, cam = %f, mot = %f", car, cam, mot);
+			//System.err.printf("car = %f, cam = %f, mot = %f", car, cam, mot);
 			JOptionPane.showMessageDialog(null, "Valores atualizados com sucesso", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 			close();
 		}

@@ -234,9 +234,9 @@ public class EntradaIHC extends JPanel implements ActionListener {
 					result = Facade.getInstance().insereVeiculo(placa, tempo_string, tipo_veiculo);
 				} else {
 					int vaga = Integer.parseInt((String)fieldVaga.getText()) - 1;
-					result = Facade.getInstance().insereVeiculo(placa, tempo_string, tipo_veiculo, vaga + this.andar * 100);
+					result = Facade.getInstance().insereVeiculo(placa, tempo_string, tipo_veiculo, vaga); //vaga + this.andar * 100
 				}
-				System.err.println("Insert OK");
+				//System.err.println("Insert OK");
 				JOptionPane.showMessageDialog(null, String.format("Veiculo inserido com sucesso!\nVaga: %s\nPiso %s", VagaData.convertCoord(result), VagaData.floorName(result / 100)), "Sucesso", JOptionPane.INFORMATION_MESSAGE); 
 				
 				Facade.getInstance().refreshMainIHC();

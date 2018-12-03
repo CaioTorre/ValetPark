@@ -10,7 +10,7 @@ public class Piso1 extends Piso  {
 	
 	private Piso1() {
 		try {
-			carregaPiso(Sistema.p1Arq);
+			carregaPiso(Sistema.p1Arq, 100);
 		} catch (FileNotFoundException ex) {
 			System.err.println("Arquivo nao foi encontrado, criando piso 1 vazio");
 			criaVazio();
@@ -27,6 +27,6 @@ public class Piso1 extends Piso  {
 	
 	private void criaVazio() {
 		vagas.clear();
-		for (int i = 0; i < 100; i++) { vagas.add(new VagaData(i, 0, 1)); }
+		for (int i = 0; i < 100; i++) { vagas.add(new VagaData(100 + i, 0, 1)); }
 	}
 }

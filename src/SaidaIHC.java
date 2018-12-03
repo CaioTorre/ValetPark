@@ -137,7 +137,7 @@ public class SaidaIHC extends JPanel implements ActionListener {
 			String placa  = fieldPlaca.getText();
 			String tempo_string = fieldHorario.getText();
 			try {
-				if (!placa.contains("_")) throw new PlacaInvalidaEX();
+				if (placa.contains("_")) throw new PlacaInvalidaEX();
 					Facade.getInstance().removeVeiculo(placa, tempo_string);
 					JOptionPane.showMessageDialog(null, "Veiculo removido com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE); 
 					

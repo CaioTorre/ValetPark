@@ -30,7 +30,8 @@ public class Epoch {
 	}
 	
 	public int deltaT(Epoch b) {
-		return deltaE(b).asEpoch();
+		return epoch - b.asEpoch();
+		//return deltaE(b).asEpoch();
 	}
 	
 	public Epoch deltaE(Epoch b) {

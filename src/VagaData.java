@@ -24,8 +24,9 @@ public class VagaData implements ActionListener{
 	}
 	
 	public static String convertCoord(int id) {
-		int col = (id % 10) + 1;
-		int lin = (id / 10);
+		int id_conv = id % 100;
+		int col = (id_conv % 10) + 1;
+		int lin = (id_conv / 10);
 		String res = String.format("%c%d", 'A' + lin, col);
 		return res;
 	}

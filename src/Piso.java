@@ -70,7 +70,7 @@ public abstract class Piso {
 			if (vaga.getOcupado() && vaga.comparaPlaca(v)) {
 				VeiculoData removido = vaga.getVeiculo(); //vaga.desocupa();
 				Epoch delta = v.getEpoch().deltaE(removido.getEpoch());
-				Epoch entrada = vaga.getVeiculo().getEpoch();
+				//Epoch entrada = vaga.getVeiculo().getEpoch();
 				//System.err.printf("Delta = %d - %d = %d\n", removido.getEpoch().asEpoch(), v.getEpoch().asEpoch(), delta);
 				if (delta.asEpoch() < 0) { 
 					throw new DeltaTInvalidoEX();
@@ -104,10 +104,10 @@ public abstract class Piso {
 		}
 		p.write(b.toString());
 		p.close();
-		System.out.println("Saved file " + arquivo);
+		//System.out.println("Saved file " + arquivo);
 	}
 	
-	public void carregaPiso(String arquivo) throws FileNotFoundException, NumberFormatException, BadEpochStringEX {
+	public void carregaPiso(String arquivo, int floorOffset) throws FileNotFoundException, NumberFormatException, BadEpochStringEX {
 		BufferedReader reader = new BufferedReader( new FileReader(arquivo) );
 		String line;
 		String split[];
@@ -118,7 +118,7 @@ public abstract class Piso {
 				String idString = split[0];
 				String tipoString = split[1];
 				String andarString = split[2];
-				int id = Integer.parseInt(idString);
+				int id = Integer.parseInt(idString);// + floorOffset;
 				int tipo = Integer.parseInt(tipoString);
 				int andar = Integer.parseInt(andarString);
 				
